@@ -82,7 +82,7 @@ def variational_error(func,params,error,param_id):
     values = []
      #converts error and param_id to lists if only a single value is provided
         
-    if type(error) != list and type(error) != array:
+    if type(error) != list and type(error) != np.array:
         error = [error]
         param_id = [param_id]
         
