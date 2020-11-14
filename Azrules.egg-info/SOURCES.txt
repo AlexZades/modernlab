@@ -1,0 +1,13 @@
+README.md
+setup.py
+Azrules.egg-info/PKG-INFO
+Azrules.egg-info/SOURCES.txt
+Azrules.egg-info/dependency_links.txt
+Azrules.egg-info/top_level.txt
+azrules.egg-info/PKG-INFO
+azrules.egg-info/SOURCES.txt
+azrules.egg-info/dependency_links.txt
+azrules.egg-info/top_level.txt
+modernlab/__init__.py
+modernlab/quick_plot.py
+modernlab/variational_error.py
