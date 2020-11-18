@@ -4,17 +4,17 @@ import scipy.optimize as opt
 import inspect as inspect
 
 #Calcuates error in functions variationally
-def quick_plot(xdata, ydata, xname = None, yname = None, title = None, linename = None, error = None, fit = None, y_bar = False, legend = False, guesses = None):
+def quick_plot(xdata, ydata, xname = None, yname = None, title = None, linename = None, yerror = None, xerror = None, fit = None, y_bar = False, x_bar = False, legend = False, guesses = None):
 
         
     ## Determine Fit parameters 
-    if error is not None and fit is not None: #Calulates Fit Parameters when an error is provided
+    if yerror is not None and fit is not None: #Calulates Fit Parameters when an error is provided
         
         if guesses is not None: #Calculates fit parameters with guesses
-            parameters, covariance = opt.curve_fit(fit, xdata, ydata,sigma = error,p0=guesses)
+            parameters, covariance = opt.curve_fit(fit, xdata, ydata,sigma = yerror,p0=guesses)
 
         else:#Calculates fit parameters without guesses
-            parameters, covariance = opt.curve_fit(fit, xdata, ydata,sigma = error)
+            parameters, covariance = opt.curve_fit(fit, xdata, ydata,sigma = yerror)
 
         perr = np.sqrt(np.diag(covariance)) #calculates error in values based on the covariance matrix
         
@@ -30,10 +30,18 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, linename 
         
         
     if y_bar: #plots error bars
-        if error is None:
+        if yerror is None:
             print("Error plotting error bars: y_bar= True but no error values were specified") 
         try:
-            plt.errorbar(xdata,ydata,yerr=error,capsize = 5,marker = 'o',linestyle = 'None', label = 'data')
+            plt.errorbar(xdata,ydata,yerr=yerror,capsize = 5,marker = 'o',linestyle = 'None', label = 'data')
+        except Exception as ex:
+            # prints exception if there is an error while plotting error bars
+            print(f"Error plotting error bars: {ex}")
+    if x_bar: #plots error bars
+        if xerror is None:
+            print("Error plotting error bars: x_bar= True but no error values were specified") 
+        try:
+            plt.errorbar(xdata,ydata,xerr=xerror,capsize = 5,marker = 'o',linestyle = 'None', label = 'data')
         except Exception as ex:
             # prints exception if there is an error while plotting error bars
             print(f"Error plotting error bars: {ex}")
@@ -69,12 +77,14 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, linename 
     
     
     
-    if error is not None and fit is not None: 
+    if (yerror is not None and fit is not None) or (xerror is not None and fit is not None) : 
         #returns parameter
         return [f"{param} = {parameters[param_names.index(param)]} +/-{perr[param_names.index(param)]}" for param in param_names]
     elif(fit is not None):
         return [f"{param} = {parameters[param_names.index(param)]} +/-{perr[param_names.index(param)]}" for param in param_names]
 
+    else:
+        return 0
 
 
 def variational_error(func,params,error,param_id):
