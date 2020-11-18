@@ -28,8 +28,8 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, linename 
             
         perr = np.sqrt(np.diag(covariance)) 
         
-        
-    if y_bar: #plots error bars
+
+    if y_bar and not x_bar: #plots error bars
         if yerror is None:
             print("Error plotting error bars: y_bar= True but no error values were specified") 
         try:
@@ -37,11 +37,19 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, linename 
         except Exception as ex:
             # prints exception if there is an error while plotting error bars
             print(f"Error plotting error bars: {ex}")
-    if x_bar: #plots error bars
+    if x_bar and not y_bar: #plots error bars
         if xerror is None:
             print("Error plotting error bars: x_bar= True but no error values were specified") 
         try:
             plt.errorbar(xdata,ydata,xerr=xerror,capsize = 5,marker = 'o',linestyle = 'None', label = 'data')
+        except Exception as ex:
+            # prints exception if there is an error while plotting error bars
+            print(f"Error plotting error bars: {ex}")
+    if x_bar and y_bar:
+        if xerror is None or yerror is None:
+            print(f"Error plotting error bars: x_bar= {x_bar} and y_bar= {y_bar} but no error values were specified") 
+        try:
+            plt.errorbar(xdata,ydata,xerr=xerror,yerr=yerror,capsize = 5,marker = 'o',linestyle = 'None', label = 'data')
         except Exception as ex:
             # prints exception if there is an error while plotting error bars
             print(f"Error plotting error bars: {ex}")
@@ -50,7 +58,7 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, linename 
     if fit is not None : #plots fit line and data
         try:
             plt.plot(xdata,fit(xdata,*parameters),label = linename) 
-            if not y_bar:
+            if not y_bar and not x_bar:
                 plt.plot(xdata,ydata, 'o')
 
         except:
