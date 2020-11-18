@@ -83,8 +83,7 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, linename 
     elif(fit is not None):
         return [f"{param} = {parameters[param_names.index(param)]} +/-{perr[param_names.index(param)]}" for param in param_names]
 
-    else:
-        return 0
+    #End Logic
 
 
 def variational_error(func,params,error,param_id):
