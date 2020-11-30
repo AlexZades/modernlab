@@ -8,7 +8,7 @@ import inspect as inspect
 # you can use the arguments positionally or just call them by name
 # y_bar indicates if you should plot error bars
 
-def quick_plot(xdata, ydata, xname = None, yname = None, title = None, fitname = None, dataname = None, yerror = None, xerror = None, fit = None, y_bar = False, x_bar = False, legend = False, guesses = None, return_raw = False):
+def quick_plot(xdata, ydata, xname = None, yname = None, title = None, fitname = None, dataname = None, yerror = None, xerror = None, fit = None, y_bar = False, x_bar = False, legend = False, guesses = None, return_raw = False, show = False):
     '''
     Plots data using matplotlib.pyplot with the ability to add tiles, a fit line, error bars, and more. Used to plot basic plots quickly. Please refer to the notes for best practices for details on how to use the function properly.
 
@@ -30,9 +30,10 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, fitname =
                 guesses (array_like, optional): starting guesses for fit function
                     see p0 parameter in scipy.optimize.curve_fit
                 return_raw (bool, optional): if true will return Raw_parameters instead of Parameters
+                show (bool, optional): if true will show the plot (in ipynb this happens automatically so there is no need to use this)
 
         Returns:
-                Parameters (list): an array of strings containing the name of each parameter in the fit function along with its value and uncertanty
+                Parameters (list): a list of strings containing the name of each parameter in the fit function along with its value and uncertanty
                 Raw_Parameters (list): a list containing a list of values for the fit parameters and list of values for the uncertanty in the fit parameters
     '''
 
@@ -110,8 +111,8 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, fitname =
     if title is not None:
         plt.title(title, fontsize = 18)
 
-    plt.show()
-    
+    if show:
+        plt.show()
     
     if not return_raw: #
         if(fit is not None):

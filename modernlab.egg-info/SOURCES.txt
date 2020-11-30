@@ -1,3 +1,4 @@
+MANIFEST.in
 README.md
 setup.py
 modernlab/__init__.py
@@ -6,4 +7,5 @@ modernlab/variational_error.py
 modernlab.egg-info/PKG-INFO
 modernlab.egg-info/SOURCES.txt
 modernlab.egg-info/dependency_links.txt
+modernlab.egg-info/requires.txt
 modernlab.egg-info/top_level.txt

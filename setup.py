@@ -1,28 +1,25 @@
-import setuptools
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+from setuptools import setup, find_packages
+import pathlib
 
-setuptools.setup(
-    name="modernlab", 
-    version="0.0.1",
-    author="Alex Zades",
-    author_email="az@st4r.io",
-    description="Data visualization and analysis tools",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/AlexZades/modernlab",
-    packages=['modernlab'],
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-    python_requires='>=3.6',
-    install_requires=[
-        'PyYAML',
-        'scipy.optimize>=1.5.3',
-        'numpy>=1.14.5',
-        'matplotlib>=2.2.0'
-    ]
+here = pathlib.Path(__file__).parent.resolve()
+
+long_description = (here / 'README.md').read_text(encoding='utf-8')
+
+
+setup(
+    name='modernlab',  # Required
+    version='0.1.1',  # Required
+    description='Data visualization and analysis toolst',  # Optional
+    long_description=long_description,  # Optional
+    long_description_content_type='text/markdown',  # Optional (see note above)
+    url='https://github.com/AlexZades/modernlab',  # Optional
+    author='Alex Zades',  # Optional
+    author_email='az@st4r.io',  # Optional
+    packages=find_packages(),  # Required
+    python_requires='>=3.5',
+    install_requires=['numpy','scipy'],  # Optional
+    project_urls={  # Optional
+        'Wiki': 'https://github.com/AlexZades/modernlab/wiki'
+        },
 )
