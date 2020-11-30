@@ -2,9 +2,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as opt
 import inspect as inspect
-
 #Calcuates error in functions variationally
-def quick_plot(xdata, ydata, xname = None, yname = None, title = None, fitname = None, dataname = None, yerror = None, xerror = None, fit = None, y_bar = False, x_bar = False, legend = False, guesses = None, return_raw = False):
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.optimize as opt
+import inspect as inspect
+
+# How to use
+# Place in your x data and y data, then put tites in as strings
+# you can use the arguments positionally or just call them by name
+# y_bar indicates if you should plot error bars
+
+def quick_plot(xdata, ydata, xname = None, yname = None, title = None, fitname = None, dataname = None, yerror = None, xerror = None, fit = None, y_bar = False, x_bar = False, legend = False, guesses = None, return_raw = False, show = False):
     '''
     Plots data using matplotlib.pyplot with the ability to add tiles, a fit line, error bars, and more. Used to plot basic plots quickly. Please refer to the notes for best practices for details on how to use the function properly.
 
@@ -26,9 +35,10 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, fitname =
                 guesses (array_like, optional): starting guesses for fit function
                     see p0 parameter in scipy.optimize.curve_fit
                 return_raw (bool, optional): if true will return Raw_parameters instead of Parameters
+                show (bool, optional): if true will show the plot (in ipynb this happens automatically so there is no need to use this)
 
         Returns:
-                Parameters (list): an array of strings containing the name of each parameter in the fit function along with its value and uncertanty
+                Parameters (list): a list of strings containing the name of each parameter in the fit function along with its value and uncertanty
                 Raw_Parameters (list): a list containing a list of values for the fit parameters and list of values for the uncertanty in the fit parameters
     '''
 
@@ -106,8 +116,8 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, fitname =
     if title is not None:
         plt.title(title, fontsize = 18)
 
-    plt.show()
-    
+    if show:
+        plt.show()
     
     if not return_raw: #
         if(fit is not None):
@@ -118,10 +128,14 @@ def quick_plot(xdata, ydata, xname = None, yname = None, title = None, fitname =
     #End Logic
 
 
+import numpy as np
+
+#Calcuates error in functions variationally
 
 def variational_error(func,params,error,param_id):
     
     values = []
+    defualt = params # stores the default parameters
      #converts error and param_id to lists if only a single value is provided
         
     if type(error) != list and type(error) != np.array:
@@ -134,16 +148,15 @@ def variational_error(func,params,error,param_id):
         values.append(params[i]) 
         params[i] = values[param_id.index(i)] + error[param_id.index(i)]
         
-    # calculates high value of function
-    up_calc = np.abs(func(*params))
+    # calculates high error of function
+    up_calc = np.abs(func(*params)-func(*defualt)) 
     
     # subtracts error from each value spesified in param_id
     for i in param_id:
         params[i] = values[param_id.index(i)] - error[param_id.index(i)]
     
-    # calculates low value of function
-    down_calc = np.abs(func(*params))
+    # calculates low eror of function
+    down_calc = np.abs(func(*params)-func(*defualt))
     
     #returns the average of the difference between the high and low values
-    return np.abs(up_calc - down_calc)/2
-
+    return np.abs(up_calc + down_calc)/2
